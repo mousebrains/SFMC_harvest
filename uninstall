@@ -1,0 +1,13 @@
+#! /bin/bash
+#
+# Install SFMC harvestor as a service
+#
+# Nov-2024, Pat Welch, pat@mousebrains.com
+
+myPath=`dirname $0`
+
+$myPath/TPWUtils/install.py \
+	--uninstall \
+	--verbose \
+	--service=SFMC_monitor.service \
+	$*
