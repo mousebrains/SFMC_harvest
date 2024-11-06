@@ -18,7 +18,7 @@ from SendTo import SendToTarget
 from ParseDialog import ParseDialog
 
 class MonitorGlider(Thread):
-    def __init__(self, glider:str, args:ArgumentParser, parser:list) -> None:
+    def __init__(self, glider:str, args:ArgumentParser, parser:ParseDialog) -> None:
         Thread.__init__(self, glider, args)
         self.__gliderName = glider
         self.__parser = parser
@@ -52,6 +52,7 @@ class MonitorGlider(Thread):
                 line = proc.stdout.readline()
                 if not line: break
                 logging.info("%s", line)
+                self.__parser.put(line)
         raise Exception(f"To many reconnection attempts, {cnt}")
 
 parser = ArgumentParser()
