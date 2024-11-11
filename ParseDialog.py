@@ -62,6 +62,7 @@ class ParseDialog(Thread):
 
         while True:
             line = q.get()
+            q.task_done()
             matches = reLoci.match(line)
             if matches:
                 lat = self.__mkDegrees(matches[1])

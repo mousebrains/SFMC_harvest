@@ -37,6 +37,7 @@ class SendToTarget(Thread):
 
         while True:
             fn = q.get()
+            q.task_done()
             logging.info("SendTo %s", fn)
             cmd = (
                     self.args.rsync,
