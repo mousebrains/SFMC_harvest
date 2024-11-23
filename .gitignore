@@ -2,5 +2,7 @@ __pycache__
 *.swp
 log
 CSV
+sensors
+from-glider
 config
 sfmc-rest-programs
