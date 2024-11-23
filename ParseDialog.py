@@ -113,6 +113,7 @@ class ParseDialog(Thread):
 
         while True:
             line = q.get()
+            q.task_done()
             matches = reLoci.match(line)
             if matches:
                 prevTime = self.__matchedLocation(matches, t, prevTime, ofn)
