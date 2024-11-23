@@ -17,7 +17,6 @@ ExecStart=/home/pwelch/SFMC_harvest/monitor.py \
 	--mailSubject="SFMC Harvest" \
 	--verbose \
 	--hostname=arcterx:SFMC \
-	ucsd_sim \
 	catalina \
 	mariner \
 	ng605 \
