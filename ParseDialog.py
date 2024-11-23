@@ -82,7 +82,7 @@ class ParseDialog(Thread):
 
     def __mkSensor(self, name:bytes, units:bytes, val:bytes, dt:bytes, time:datetime,) -> None:
         dt = float(dt)
-        if dt > 3000: return sensors
+        if dt > 3000: return
 
         self.__sensors.put(
                 str(name, "utf-8"), 
