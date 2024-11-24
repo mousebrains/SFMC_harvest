@@ -28,7 +28,7 @@ class ParseDialog(Thread):
     def __init__(self, glider:str, args:ArgumentParser, sendTo:list, 
             sensors:Sensors, download:DownloadFiles,
             ) -> None:
-        Thread.__init__(self, glider + " PD", args)
+        Thread.__init__(self, "PD:" + glider, args)
         self.__gliderName = glider
         self.__sendTo = sendTo
         self.__sensors = sensors

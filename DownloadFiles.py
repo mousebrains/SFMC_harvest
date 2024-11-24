@@ -22,7 +22,7 @@ from SendTo import SendToTarget
 
 class DownloadFiles(Thread):
     def __init__(self, glider:str, args:ArgumentParser, sendTo:SendToTarget) -> None:
-        Thread.__init__(self, glider + " Dn", args)
+        Thread.__init__(self, "DN:" + glider, args)
         self.__glider = glider
         self.__sendTo = sendTo
         self.__queue = queue.Queue()
@@ -39,9 +39,9 @@ class DownloadFiles(Thread):
                 help="Folder to pull files from")
         grp.add_argument("--downloadDir", type=str, default="./from-glider",
                 help="Where to store files")
-        grp.add_argument("--safety", type=float, default=600,
+        grp.add_argument("--safety", type=float, default=86400,
                 help="Seconds to look for file before it was finished")
-        grp.add_argument("--downloadDelay", type=float, default=60,
+        grp.add_argument("--downloadDelay", type=float, default=300,
                 help="How long to delay in seconds")
         return parser
 
@@ -53,6 +53,10 @@ class DownloadFiles(Thread):
         glider = self.__glider
         tgtDir = os.path.join(args.downloadDir, glider)
         logging.info("Starting tgt %s", tgtDir)
+
+        if ~os.path.isdir(tgtDir):
+            logging.info("Creating %s", tgtDir)
+            os.makedirs(tgtDir, 0o755, exist_ok=True)
 
         q = self.__queue
 
@@ -77,6 +81,7 @@ class DownloadFiles(Thread):
                 fn = str(fn, "utf-8")
                 (basename, ext) = os.path.splitext(os.path.basename(fn))
                 prefixes.add(basename)
+                logging.info("Sucked in %s", fn)
 
             logging.info("Prefixes %s", prefixes)
 
@@ -88,6 +93,7 @@ class DownloadFiles(Thread):
 
             with TemporaryDirectory() as tempdir:
                 fnZip = os.path.join(tempdir, "temp.zip")
+                logging.info("fnZip %s", fnZip)
                 for prefix in prefixes:
                     cmd = (args.node,
                             os.path.join(args.API, "download_glider_files.js"),
@@ -103,14 +109,17 @@ class DownloadFiles(Thread):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT,
                             )
+                    logging.info("subProcwess %s", sp)
                     if os.path.isfile(fnZip):
                         with zipfile.ZipFile(fnZip) as zip:
                             names = zip.namelist()
+                            logging.info("Names %s", names)
                             if not names: continue
                             zip.extractall(path=tgtDir)
+                            logging.info("SendTo %s", self.__sendTo)
                             if self.__sendTo:
                                 for tgt in self.__sendTo:
                                     for name in names:
-                                        tgt.put(os.path.join(tgtDir, name))
+                                        tgt.put(tgtDir)
 
                         os.unlink(fnZip)

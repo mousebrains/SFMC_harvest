@@ -41,10 +41,10 @@ if args.hostname:
 threads = []
 for glider in args.glider:
     sensors = Sensors(glider, args, sendTo)
-    download = DownloadFiles(glider, args, sendTo)
-    parser = ParseDialog(glider, args, sendTo, sensors, download)
     sensors.start()
+    download = DownloadFiles(glider, args, sendTo)
     download.start()
+    parser = ParseDialog(glider, args, sendTo, sensors, download)
     parser.start()
     threads.append(MonitorGlider(glider, args, parser))
     threads[-1].start()

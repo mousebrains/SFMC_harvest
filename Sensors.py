@@ -19,7 +19,7 @@ from SendTo import SendToTarget
 
 class Sensors(Thread):
     def __init__(self, glider:str, args:ArgumentParser, sendTo:SendToTarget) -> None:
-        Thread.__init__(self, glider + " SN", args)
+        Thread.__init__(self, "SN:" + glider, args)
         self.__gliderName = glider
         self.__sendTo = sendTo
         self.__queue = queue.Queue()
@@ -62,7 +62,7 @@ class Sensors(Thread):
                 nc[name][index] = sensors[name][1]
         if self.__sendTo:
             for tgt in self.__sendTo:
-                tgt.put(ofn)
+                tgt.put(self.args.sensorDir)
         return 
 
     def runIt(self): # Called on start
