@@ -44,7 +44,6 @@ class SendToTarget(Thread):
                     "--archive",
                     "--verbose",
                     "--temp-dir", self.args.tempDirectory,
-                    "--delay-updates",
                     fn,
                     self.name)
             logging.info("cmd %s", cmd)

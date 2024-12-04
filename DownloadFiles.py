@@ -123,3 +123,16 @@ class DownloadFiles(Thread):
                                         tgt.put(tgtDir)
 
                         os.unlink(fnZip)
+
+if __name__ == "__main__":
+    parser = ArgumentParser()
+    DownloadFiles.addArgs(parser)
+    parser.add_args("glider", type=str, help="Glider to download files for")
+    parser.add_args("filename", type=str, help="Filename")
+    args = parser.parse_args(
+
+    dn = DownloadFiles(args.glider, args, None)
+    dn.start()
+
+    time.sleep(30)
+    # def __init__(self, glider:str, args:ArgumentParser, sendTo:SendToTarget) -> None:
