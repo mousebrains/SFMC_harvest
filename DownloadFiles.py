@@ -80,13 +80,14 @@ class DownloadFiles(Thread):
                     q.task_done()
                     continue
                 logging.info("Unzipping %s", fnZip)
+                tgtPath = os.path.join(tgtDir, glider)
                 with zipfile.ZipFile(fnZip) as zip:
                     cnt = len(zip.namelist())
-                    zip.extractall(path=tgtDir)
+                    zip.extractall(path=tgtPath)
                 os.unlink(fnZip)
                 logging.info("Retrieved %s files", cnt)
                 if self.__sendTo:
-                    for tgt in self.__sendTo: tgt.put(tgtDir)
+                    for tgt in self.__sendTo: tgt.put(tgtPath)
                     for tgt in self.__sendTo: tgt.join()
 
             q.task_done()
