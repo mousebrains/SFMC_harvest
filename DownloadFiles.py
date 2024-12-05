@@ -81,6 +81,7 @@ class DownloadFiles(Thread):
                     continue
                 logging.info("Unzipping %s", fnZip)
                 tgtPath = os.path.join(tgtDir, glider)
+                os.makedirs(tgtPath, 0o755, exist_ok=True)
                 with zipfile.ZipFile(fnZip) as zip:
                     cnt = len(zip.namelist())
                     zip.extractall(path=tgtPath)
