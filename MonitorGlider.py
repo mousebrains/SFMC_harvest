@@ -44,6 +44,8 @@ class MonitorGlider(Thread):
                 self.__gliderName,
                 )
 
+        logging.info("Starting %s", cmd)
+
         for cnt in range(args.reconnect):
             logging.info("cnt %s cmd %s", cnt, cmd)
             proc = subprocess.Popen(
@@ -54,7 +56,7 @@ class MonitorGlider(Thread):
                     )
             while True:
                 line = proc.stdout.readline()
+                logging.info("Line %s", line)
                 if not line: break
-                logging.info("%s", line)
                 self.__parser.put(line)
         raise Exception(f"To many reconnection attempts, {cnt}")

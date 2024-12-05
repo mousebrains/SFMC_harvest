@@ -110,10 +110,12 @@ class ParseDialog(Thread):
 
         while True:
             line = q.get()
+            logging.info("Line %s", line)
             q.task_done()
             matches = reLoci.match(line)
             if matches:
                 prevTime = self.__matchedLocation(matches, t, prevTime, ofn)
+                logging.info("prevTime %s", prevTime)
                 continue
 
             matches = reTime.match(line)
@@ -122,11 +124,13 @@ class ParseDialog(Thread):
                         str(matches[1], "utf-8"),
                         "%b %d %H:%M:%S %Y",
                         ).replace(tzinfo=timezone.utc)
+                logging.info("time %s", t)
                 continue
 
             matches = reSensor.match(line)
             logging.info("SENSORS line %s\nmatches %s", line, matches)
             if matches and t: 
+                logging.info("sensor %s %s %s %s t %s", matches[1], matches[2], matches[3], matches[4], t)
                 self.__mkSensor(matches[1], matches[2], matches[3], matches[4], t,)
                 continue
 
@@ -138,6 +142,7 @@ class ParseDialog(Thread):
 
             matches = reZmodem.match(line)
             if matches:
+                logging.info("ZModem")
                 self.__download.put(datetime.now(tz=timezone.utc) if t is None else t)
                 continue
 
