@@ -15,9 +15,6 @@ import queue
 import os
 import re
 import math
-import numpy as np
-import pandas as pd
-import xarray as xr
 import time
 from datetime import datetime, timezone, timedelta
 from TPWUtils.Thread import Thread
@@ -128,18 +125,20 @@ class ParseDialog(Thread):
                 continue
 
             matches = reSensor.match(line)
+            logging.info("SENSORS line %s\nmatches %s", line, matches)
             if matches and t: 
                 self.__mkSensor(matches[1], matches[2], matches[3], matches[4], t,)
                 continue
 
             matches = reDevices.match(line)
+            logging.info("DEVICES line %s\nmatches %s", line, matches)
             if matches:
                 self.__sensors.devices()
                 continue
 
             matches = reZmodem.match(line)
             if matches:
-                self.__download.put(matches[1], time.time())
+                self.__download.put(datetime.now(tz=timezone.utc) if t is None else t)
                 continue
 
 if __name__ == "__main__":

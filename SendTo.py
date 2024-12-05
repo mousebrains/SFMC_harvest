@@ -37,7 +37,6 @@ class SendToTarget(Thread):
 
         while True:
             fn = q.get()
-            q.task_done()
             logging.info("SendTo %s", fn)
             cmd = (
                     self.args.rsync,
@@ -73,6 +72,7 @@ class SendToTarget(Thread):
                         logging.info("STDERR: %s", str(sp.stderr, "utf-8"))
                     except:
                         logging.info("STDERR: %s", sp.stderr)
+            q.task_done()
 
 if __name__ == "__main__":
     parser = ArgumentParser()
