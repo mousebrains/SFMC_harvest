@@ -39,6 +39,8 @@ class DownloadFiles(Thread):
                 help="Seconds back to look for files after the first fetch")
         grp.add_argument("--downloadDelay", type=float, default=300,
                 help="How long to delay in seconds")
+        grp.add_argument("--randomDelay", type=float, default=30,
+                help="Random delay between page fetches in seconds")
         return parser
 
     def join(self) -> None:
@@ -91,8 +93,8 @@ class DownloadFiles(Thread):
             if "next" not in info["links"]: break
 
             page += 1
-            dt = random.uniform(0.5,60)
-            logging.info("Waiting %s seconds to throttle page requests", dt)
+            dt = random.uniform(0.5,args.randomDelay)
+            logging.info("Waiting %s seconds to throttle page requests before page %s", dt, page)
             time.sleep(dt)
 
         return (files, tMin, tMax)
