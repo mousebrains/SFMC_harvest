@@ -143,7 +143,7 @@ class ParseDialog(Thread):
             matches = reZmodem.match(line)
             if matches:
                 logging.info("ZModem")
-                self.__download.put(datetime.now(tz=timezone.utc) if t is None else t)
+                self.__download.put()
                 continue
 
 if __name__ == "__main__":
