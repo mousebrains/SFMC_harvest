@@ -15,6 +15,7 @@ import os
 from TPWUtils import Logger
 from TPWUtils.Thread import Thread
 from ParseDialog import ParseDialog
+import time
 
 class MonitorGlider(Thread):
     def __init__(self, glider:str, args:ArgumentParser, parser:ParseDialog) -> None:
@@ -32,6 +33,7 @@ class MonitorGlider(Thread):
                     help="Which node command to execute")
             grp.add_argument("--reconnect", type=int, default=10,
                     help="Number of reconnection attempts to allow")
+            grp.add_argument("--replay", type=str, help="Input dialog to parse")
         except:
             pass
         return parser
@@ -39,6 +41,15 @@ class MonitorGlider(Thread):
 
     def runIt(self): # Called on start
         args = self.args
+
+        if args.replay:
+            with open(args.replay, "rb") as fp:
+                for line in fp:
+                    logging.info("Line %s", line)
+                    self.__parser.put(line)
+            time.sleep(10000)
+            return
+
         cmd = (args.node,
                 os.path.join(args.API, "output_glider_dialog_data.js"),
                 self.__gliderName,

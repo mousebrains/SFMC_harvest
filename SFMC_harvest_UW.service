@@ -1,0 +1,28 @@
+#
+# Monitor glider's dialog via SFMC API and send positions to ARCTERX
+#
+# Nov-2024, Pat Welch, pat@mousebrains.com
+
+[Unit]
+Description=Harvest Slocum glider positions from SFMC
+
+[Service]
+Type=simple
+User=pat
+WorkingDirectory=/home/pat/SFMC_harvest_UW
+#
+ExecStart=/home/pat/SFMC_harvest_UW/monitor.py \
+	--logfile=/home/pat/logs/SFMC_harvest_UW.log \
+	--mailTo="pat@mousebrains.com" \
+	--mailSubject="SFMC Harvest UW" \
+	--verbose \
+	--hostname=/home/pat/Sync/Shore/SFMC \
+	--tempDirectory=/home/pat/.cache \
+	starbuck \
+	boomer
+
+RestartSec=60
+Restart=always
+        
+[Install]
+WantedBy=multi-user.target
