@@ -1,0 +1,12 @@
+#! /bin/bash
+#
+# Install SFMC harvestor as a service
+#
+# Nov-2024, Pat Welch, pat@mousebrains.com
+
+myPath=`dirname $0`
+
+$myPath/TPWUtils/install.py \
+	--verbose \
+	--service=SFMC_harvest_OSU.service \
+	$*
