@@ -39,7 +39,7 @@ class DownloadFiles(Thread):
                 help="Seconds back to look for files after the first fetch")
         grp.add_argument("--downloadDelay", type=float, default=300,
                 help="How long to delay in seconds")
-        grp.add_argument("--randomDelay", type=float, default=30,
+        grp.add_argument("--randomDelay", type=float, default=60,
                 help="Random delay between page fetches in seconds")
         return parser
 

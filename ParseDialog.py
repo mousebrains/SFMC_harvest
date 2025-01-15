@@ -38,7 +38,7 @@ class ParseDialog(Thread):
         self.__sensor = re.compile(
                 b"^\s+sensor:(\w+)[(]([/\-%\w]+)[)]=(-?\d+[.]{0,1}\d*)\s+(\d+[.]\d*|\d+e[+-]?\d+) secs ago")
         self.__devices = re.compile(b"^devices:")
-        self.__zmodem = re.compile(b"^zModem\s+transfer\s+DONE\s+for\s+file\s+(\w+[.]\w+)")
+        self.__zmodem = re.compile(b"^zModem\s+transfer\s+DONE\s+for\s+file")
 
     @staticmethod
     def addArgs(parser:ArgumentParser) -> ArgumentParser:
@@ -140,8 +140,7 @@ class ParseDialog(Thread):
                 self.__sensors.devices()
                 continue
 
-            matches = reZmodem.match(line)
-            if matches:
+            if reZmodem.match(line):
                 logging.info("ZModem")
                 self.__download.put()
                 continue
