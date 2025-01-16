@@ -148,7 +148,9 @@ class DownloadFiles(Thread):
             if self.__sendTo:
                 for tgt in self.__sendTo: tgt.put(tgtPath) # Rsync everything over
                 # Wait for the rsyncs to finish before we delete directory
-                for tgt in self.__sendTo: tgt.join()
+                for tgt in self.__sendTo: 
+                    logging.info("Joining %s", tgt)
+                    tgt.join()
 
         return fetched
 
@@ -167,6 +169,7 @@ class DownloadFiles(Thread):
             self.__fetchFiles(t0, fileTimes) 
 
         while True:
+            logging.info("Waiting on queue")
             q.get()
             logging.info("Sleeping for %s seconds", args.downloadDelay)
             time.sleep(args.downloadDelay)
@@ -177,6 +180,7 @@ class DownloadFiles(Thread):
             [fileTimes, t0, t1] = self.__fileTimes(t1, fileTimes)
             logging.info("n %s t0 %s t1 %s", len(fileTimes), t0, t1)
             self.__fetchFiles(t0, fileTimes)
+            logging.info("Returned from __fetchFiles")
             q.task_done()
 
 if __name__ == "__main__":

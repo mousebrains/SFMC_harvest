@@ -28,6 +28,9 @@ class SendToTarget(Thread):
         grp.add_argument("--rsync", type=str, default="/usr/bin/rsync", help="rsync command to use")
         return parser
 
+    def join(self) -> None:
+        self.__queue.join()
+
     def put(self, fn:str) -> None:
         self.__queue.put(fn)
 
@@ -73,6 +76,7 @@ class SendToTarget(Thread):
                     except:
                         logging.info("STDERR: %s", sp.stderr)
             q.task_done()
+            logging.info("Task done")
 
 if __name__ == "__main__":
     parser = ArgumentParser()
