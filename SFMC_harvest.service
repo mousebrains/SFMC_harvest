@@ -18,9 +18,7 @@ ExecStart=/home/pwelch/SFMC_harvest/monitor.py \
 	--verbose \
 	--hostname=arcterx:SFMC \
 	catalina \
-	mariner \
-	ng605 \
-	ng611
+	mariner 
 
 RestartSec=60
 Restart=always
