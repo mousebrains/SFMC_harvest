@@ -179,8 +179,9 @@ class DownloadFiles(Thread):
 
             [fileTimes, t0, t1] = self.__fileTimes(t1, fileTimes)
             logging.info("n %s t0 %s t1 %s", len(fileTimes), t0, t1)
-            self.__fetchFiles(t0, fileTimes)
-            logging.info("Returned from __fetchFiles")
+            if t0 is not None:
+                self.__fetchFiles(t0, fileTimes)
+                logging.info("Returned from __fetchFiles")
             q.task_done()
 
 if __name__ == "__main__":
